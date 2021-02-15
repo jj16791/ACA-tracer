@@ -37,7 +37,7 @@ The probe file contains the occurrence of each probe event. Each line represents
 ```
 <probe_event>,<instruction_ID>:<probe_event>,<instruction_ID>:...
 ```
-The \<probe_event> field is a numerical value that relates to the defined set at the top of the `visulataion.py` file within the `probe_titles` list. The probe_event defines an index in the list, for example from the list:
+The \<probe_event> field is a numerical value that relates to the defined set at the top of the `visualisation.py` file within the `probe_titles` list. The probe_event defines an index in the list, for example from the list:
 ```
 probe_titles=[
              ("Stalled.fetch.instructionFetch","s"),
