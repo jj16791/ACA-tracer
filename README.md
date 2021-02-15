@@ -55,7 +55,7 @@ probe_titles=[
 
 A suggested format for the probe names would be `<Probe Type>.<Pipeline Unit>.<Reason>`.
 
-The instruction_ID field should be the trace \<ID> field on the instruction that caused the \<probe_event> to occur. If the event wasn't caused by an instruction, then it can be set to 0.
+The \<instruction_ID> field should be the trace \<ID> field on the instruction that caused the \<probe_event> to occur. If the event wasn't caused by an instruction, then it can be set to 0.
 
 ## Display
 The visualiser interface is split into 5 windows. The Timeline window displays the traces of each instruction whilst the right-adjacent window displays information about each instruction detailed in the window header.
