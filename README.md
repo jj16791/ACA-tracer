@@ -1,6 +1,6 @@
-# ACA OoO visualiser
+# ACA visualiser
 
-Below is a summary of how to use the ACA OutofOrder visualisation tool.
+Below is a summary of how to use the ACA visualisation tool.
 
 ## Running
 The visualiser can be run with the following command:
@@ -15,10 +15,16 @@ The --force argument is an optional argument that forces the re-writing of
 ## File formats
 ### Trace file
 The trace file inputted to the tool should contain the set of instructions simulated. Each line represents an instruction and should conform to the following format:
+
+InOrder:
+```
+<f>:<d>:<c>:<instruction_address>:<microOp_number>:<ID>:<disassembly>
+```
+OutOfOrder:
 ```
 <f>:<d>:<n>:<p>:<i>:<c>:<r>:<instruction_address>:<microOp_number>:<ID>:<disassembly>
 ```
-The first 7 fields represent the cycles in which each pipeline stage was complete with:
+The first 3/7 fields represent the cycles in which each pipeline stage was complete with:
 - f = FETCH
 - d = DECODE
 - n = RENAME
@@ -29,6 +35,12 @@ The first 7 fields represent the cycles in which each pipeline stage was complet
 
 If a flush occurs and not all stages are reached by the instruction, the value of those stages should be set to 0. The \<instruction_address> is the PC value of the instruction in a hexadecimal format. For the ACA class, the 
 \<microOp_number> field can be ignored and set to 0 whilst the \<ID> field should be a unique numerical value allocated sequentially to each fetched instruction. Finally, the \<disassembly> field is the instruction opcode and operand in a string format. Below is an example:
+
+InOrder:
+```
+10:11:33:0x00009c:0:39:div x23, x22, x0
+```
+OutOfOrder:
 ```
 10:11:12:13:14:37:38:0x00009c:0:39:div x23, x22, x0
 ```
@@ -37,6 +49,8 @@ The probe file contains the occurrence of each probe event. Each line represents
 ```
 <probe_event>,<instruction_ID>:<probe_event>,<instruction_ID>:...
 ```
+If a probe event did not occur within the cycle, a "-" symbol is used.
+
 The \<probe_event> field is a numerical value that relates to the defined set at the top of the `visualisation.py` file within the `probe_titles` list. The probe_event defines an index in the list, for example from the list:
 ```
 probe_titles=[
@@ -55,7 +69,17 @@ probe_titles=[
 
 A suggested format for the probe names would be `<Probe Type>.<Pipeline Unit>.<Reason>`.
 
-The \<instruction_ID> field should be the trace \<ID> field on the instruction that caused the \<probe_event> to occur. If the event wasn't caused by an instruction, then it can be set to 0.
+The \<instruction_ID> field should be the trace \<ID> field on the instruction that caused the \<probe_event> to occur. If the event wasn't caused by an instruction, then it can be set to 0. An example snippet of 8 cycles within a probe file is given below:
+```
+-
+14,30
+-
+7,30, 8,33
+-
+-
+2,41, 9,0
+-
+```
 
 ## Display
 The visualiser interface is split into 5 windows. The Timeline window displays the traces of each instruction whilst the right-adjacent window displays information about each instruction detailed in the window header.
