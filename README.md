@@ -69,10 +69,10 @@ The \<instruction_ID> field should be the trace \<ID> field on the instruction t
 -
 14,30
 -
-7,30, 8,33
+7,30:8,33
 -
 -
-2,41, 9,0
+2,41:9,0
 -
 ```
 
