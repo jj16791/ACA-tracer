@@ -98,3 +98,10 @@ The "z" key can be used to confirm the selection.
 To open the jump-to menu the "j" key should be pressed. Within this menu, an instruction number can be typed and jumped to. The "enter" key confirms the input and the "backspace" key can be used to undo the input.
 
 The "z" key can be used to exit the menu.
+
+# Example inputs
+In the `examples` folder, two sets of example trace and probe file inputs have been provided as a way to explore the tool and get to grips with its usage. One set offers an output from a 3-stage scalar inorder pipeline whilst the other a 7-stage 4-way superscalar outoforder pipeline.
+
+# Visualiser snapshot
+Below is a snapshot of the visualiser tool in use:
+![Visualisation Snapshot](https://user-images.githubusercontent.com/32519988/108352752-38d41180-71df-11eb-99a2-5102c4df7cb0.png)
