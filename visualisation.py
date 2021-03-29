@@ -948,6 +948,21 @@ def visualiser(trace, probe):
             del pad3
             del pad4
             del pad5
+        else:
+            # Close files
+            trace.close()
+            probe.close()
+            # End curses instance
+            screen.keypad(False)
+            curses.nocbreak()
+            curses.echo()
+            curses.endwin()
+            print(
+                "### ERROR: Terminal size of x:" +
+                str(x) + ", y:" + str(y) + " is too small. "
+                "Please resize terminal to at least x:49, y:" +
+                str(5 + probe_length) + " and re-run. ###")
+
         # Close files
         trace.close()
         probe.close()
@@ -978,8 +993,7 @@ def main():
     parser.add_argument('probe', help='Input directory for probe file')
     parser.add_argument(
         'stages',
-        help=
-        'A string of single character pipeline stages used in generation of trace file'
+        help='A string of single character pipeline stages used in generation of trace file'
     )
     parser.add_argument('--force',
                         action='store_true',
