@@ -36,7 +36,7 @@ probe_titles = [("Stalled.fetch.instructionFetch", "s"),
 trace_data = []
 probe_data = [[]]
 selected_probes = len(probe_titles) * [1]
-info_seperations = [0, 0, 0, 0]
+info_seperations = [0, 0, 0, 0, 0]
 # Dimension Variables
 top = 0
 bottom = 0
@@ -442,7 +442,9 @@ def readTrace(file, index):
             info_string += cyc_sep + entries[0][0]
             pc_sep = (info_seperations[2] - len(info_string)) * " "
             info_string += pc_sep + entries[0][num_stages]
-            dis_sep = (info_seperations[3] - len(info_string)) * " "
+            microop_sep = (info_seperations[3] - len(info_string)) * " "
+            info_string += microop_sep + entries[0][num_stages + 1]
+            dis_sep = (info_seperations[4] - len(info_string)) * " "
             info_string += dis_sep + entries[0][num_stages + 3].rstrip()
             # Determine whether instruction has been flushed
             flushed = 0
@@ -542,15 +544,19 @@ def calcInfoOffsets(file):
     num_len = 0
     cycle_len = 0
     pc_len = 0
+    microop_len = 0
     num_len = len(split[num_stages +
                         2]) if len(split[num_stages + 2]) > 9 else 9
-    cycle_len = len(split[0]) if len(split[0]) > 7 else 7
+    cycle_len = len(split[0]) if len(split[0]) > 6 else 6
     pc_len = len(split[num_stages]) if len(split[num_stages]) > 4 else 4
+    microop_len = len(split[num_stages+1]
+                      ) if len(split[num_stages + 1]) > 6 else 6
     cycle_title_offset = 3 + num_len
     pc_title_offset = 2 + cycle_title_offset + cycle_len
-    disasm_title_offset = 2 + pc_title_offset + pc_len
+    microop_title_offset = 2 + pc_title_offset + pc_len
+    disasm_title_offset = 2 + microop_title_offset + microop_len
     info_seperations = [
-        1, cycle_title_offset, pc_title_offset, disasm_title_offset
+        1, cycle_title_offset, pc_title_offset, microop_title_offset, disasm_title_offset
     ]
     # Reset file pointer
     file.seek(prev_pos)
@@ -630,7 +636,7 @@ def visualiser(trace, probe):
             win2 = Window(win_rows_bot, win_cols_left, win_rows_top, 0,
                           ["[PROBE]"])
             win3 = Window(win_rows_top, win_cols_right, 0, win_cols_left,
-                          ["[INSN_NUM]", "[CYCLE]", "[PC]", "[DISASM]"])
+                          ["[INSN_NUM]", "[CYCLE]", "[PC]", "[µ_NUM]", "[DISASM]"])
             win4 = Window(win_rows_bot, title_cols, win_rows_top,
                           win_cols_left, ["[PROBES SELECTED]"])
             win5 = Window(win_rows_bot, asct_insn_cols, win_rows_top,
@@ -670,7 +676,8 @@ def visualiser(trace, probe):
                     win_rows_bot = probe_length + 2
                     pad_top_rows = win_rows_top - 2
                     pad_bot_rows = win_rows_bot - 2
-                    bottom = top + pad_top_rows if top + pad_top_rows < trace_file_length else trace_file_length
+                    bottom = top + pad_top_rows if top + \
+                        pad_top_rows < trace_file_length else trace_file_length
                     # Quit program if terminal size is too small
                     if (x < 49 or y < (5 + probe_length)):
                         running = False
